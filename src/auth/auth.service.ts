@@ -14,8 +14,8 @@ import { UsersService } from "src/users/users.service";
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
-    private jwtService: JwtService
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService
   ) {}
 
   async login(userDto: CreateUserDto) {
@@ -25,15 +25,12 @@ export class AuthService {
 
   async registration(userDto: CreateUserDto) {
     const { email, password } = userDto;
-    const candidate = await this.userService.getUserByEmail(email);
+    const candidate = await this.userService.getByEmail(email);
     if (candidate) {
-      throw new HttpException(
-        `User: ${email} already exists`,
-        HttpStatus.BAD_REQUEST
-      );
+      throw new HttpException("User already exists", HttpStatus.BAD_REQUEST);
     }
     const hashPassword = await bcrypt.hash(password, 5);
-    const user = await this.userService.createUser({
+    const user = await this.userService.create({
       email,
       password: hashPassword,
     });
@@ -48,7 +45,7 @@ export class AuthService {
   }
 
   private async validateUser(userDto: CreateUserDto) {
-    const user = await this.userService.getUserByEmail(userDto.email);
+    const user = await this.userService.getByEmail(userDto.email);
     const passwordEquals = await bcrypt.compare(
       userDto.password,
       user.password

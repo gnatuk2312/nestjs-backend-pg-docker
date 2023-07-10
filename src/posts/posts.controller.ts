@@ -12,11 +12,11 @@ import { PostsService } from "./posts.service";
 
 @Controller("posts")
 export class PostsController {
-  constructor(private postService: PostsService) {}
+  constructor(private readonly postService: PostsService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor("image"))
-  createPost(@Body() dto: CreatePostDto, @UploadedFile() image) {
+  create(@Body() dto: CreatePostDto, @UploadedFile() image: any) {
     return this.postService.create(dto, image);
   }
 }

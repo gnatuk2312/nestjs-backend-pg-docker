@@ -13,14 +13,14 @@ import { BanUserDto } from "./dto/ban-user.dto";
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @ApiOperation({ summary: "Get all users" })
   @ApiResponse({ status: 200, type: [User] })
   @UseGuards(JwtAuthGuard)
   @Get()
   getAll() {
-    return this.userService.getAllUsers();
+    return this.userService.getAll();
   }
 
   @ApiOperation({ summary: "Give role" })
