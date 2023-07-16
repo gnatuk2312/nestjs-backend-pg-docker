@@ -19,15 +19,13 @@ export class AuthService implements IAuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  public async login(userDto: CreateUserDto): Promise<{ token: string }> {
-    const user = await this.validateUser(userDto);
+  public async login(dto: CreateUserDto): Promise<{ token: string }> {
+    const user = await this.validateUser(dto);
     return this.generateToken(user);
   }
 
-  public async registration(
-    userDto: CreateUserDto
-  ): Promise<{ token: string }> {
-    const { email, password } = userDto;
+  public async registration(dto: CreateUserDto): Promise<{ token: string }> {
+    const { email, password } = dto;
     const candidate = await this.userService.getByEmail(email);
     if (candidate) {
       throw new HttpException("User already exists", HttpStatus.BAD_REQUEST);
@@ -47,12 +45,9 @@ export class AuthService implements IAuthService {
     return { token: this.jwtService.sign(payload) };
   }
 
-  private async validateUser(userDto: CreateUserDto): Promise<User> {
-    const user = await this.userService.getByEmail(userDto.email);
-    const passwordEquals = await bcrypt.compare(
-      userDto.password,
-      user.password
-    );
+  private async validateUser(dto: CreateUserDto): Promise<User> {
+    const user = await this.userService.getByEmail(dto.email);
+    const passwordEquals = await bcrypt.compare(dto.password, user.password);
     if (user && passwordEquals) return user;
 
     throw new UnauthorizedException({ message: "Invalid user credentials" });

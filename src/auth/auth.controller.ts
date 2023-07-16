@@ -11,12 +11,12 @@ export default class AuthController implements IAuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/login")
-  login(@Body() userDto: CreateUserDto) {
-    return this.authService.login(userDto);
+  login(@Body() dto: CreateUserDto): Promise<{ token: string }> {
+    return this.authService.login(dto);
   }
 
   @Post("/registration")
-  registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto);
+  registration(@Body() dto: CreateUserDto): Promise<{ token: string }> {
+    return this.authService.registration(dto);
   }
 }
