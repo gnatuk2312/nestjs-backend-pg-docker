@@ -6,6 +6,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+import { ApiProperty } from "@nestjs/swagger";
 
 import { User } from "src/users/users.model";
 import { IPost } from "./interfaces/post.interface";
@@ -19,6 +20,7 @@ interface PostCreationAttrs {
 
 @Table({ tableName: "posts" })
 export class Post extends Model<Post, PostCreationAttrs> implements IPost {
+  @ApiProperty({ example: "1", description: "unique id" })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -27,12 +29,21 @@ export class Post extends Model<Post, PostCreationAttrs> implements IPost {
   })
   id: number;
 
+  @ApiProperty({
+    example: "How to choose software dev partner",
+    description: "Post title",
+  })
   @Column({ type: DataType.STRING })
   title: string;
 
+  @ApiProperty({
+    example: "First of all you need ...",
+    description: "Post content",
+  })
   @Column({ type: DataType.STRING })
   content: string;
 
+  @ApiProperty({ example: "/filename.jpg", description: "Image path" })
   @Column({ type: DataType.STRING })
   image: string;
 
