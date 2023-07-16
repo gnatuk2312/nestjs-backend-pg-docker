@@ -24,3 +24,8 @@ async function start() {
 }
 
 start();
+
+// TODO: improve auth logic (using access/refresh tokens)
+// TODO: pack everything in Docker
+// TODO: add check if role is existing before creating one more
+// TODO: make files and dirs non plural (not users but user)
