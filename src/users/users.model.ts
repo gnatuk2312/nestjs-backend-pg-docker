@@ -10,6 +10,7 @@ import {
 import { Post } from "src/posts/posts.model";
 import { Role } from "src/roles/roles.model";
 import { UserRoles } from "src/roles/user-roles.model";
+import { IUser } from "./interfaces/user.interface";
 
 interface UserCreationAttrs {
   email: string;
@@ -17,7 +18,7 @@ interface UserCreationAttrs {
 }
 
 @Table({ tableName: "users" })
-export class User extends Model<User, UserCreationAttrs> {
+export class User extends Model<User, UserCreationAttrs> implements IUser {
   @ApiProperty({ example: "1", description: "unique id" })
   @Column({
     type: DataType.INTEGER,

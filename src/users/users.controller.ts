@@ -9,17 +9,18 @@ import { Roles } from "src/auth/roles-auth.decorator";
 import { RolesGuard } from "src/auth/roles.guard";
 import { AddRoleDto } from "./dto/add-role.dto";
 import { BanUserDto } from "./dto/ban-user.dto";
+import { IUserController } from "./interfaces/user-controller.interface";
 
 @ApiTags("Users")
 @Controller("users")
-export class UsersController {
+export class UsersController implements IUserController {
   constructor(private readonly userService: UsersService) {}
 
   @ApiOperation({ summary: "Get all users" })
   @ApiResponse({ status: 200, type: [User] })
   @UseGuards(JwtAuthGuard)
   @Get()
-  getAll() {
+  public getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
 
@@ -28,7 +29,7 @@ export class UsersController {
   @Roles("ADMIN")
   @UseGuards(RolesGuard)
   @Post("/role")
-  addRole(@Body() dto: AddRoleDto) {
+  public addRole(@Body() dto: AddRoleDto): Promise<User> {
     return this.userService.addRole(dto);
   }
 
@@ -37,7 +38,7 @@ export class UsersController {
   @Roles("ADMIN")
   @UseGuards(RolesGuard)
   @Post("/ban")
-  ban(@Body() dto: BanUserDto) {
+  public ban(@Body() dto: BanUserDto): Promise<User> {
     return this.userService.ban(dto);
   }
 }

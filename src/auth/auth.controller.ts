@@ -3,10 +3,11 @@ import { ApiTags } from "@nestjs/swagger";
 
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { AuthService } from "./auth.service";
+import { IAuthController } from "./interfaces/auth-controller.interface";
 
 @ApiTags("Authorization")
 @Controller("auth")
-export class AuthController {
+export default class AuthController implements IAuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/login")

@@ -9,6 +9,7 @@ import {
 
 import { User } from "src/users/users.model";
 import { UserRoles } from "./user-roles.model";
+import { IRole } from "./interfaces/role.interface";
 
 interface RoleCreationAttrs {
   value: string;
@@ -16,7 +17,7 @@ interface RoleCreationAttrs {
 }
 
 @Table({ tableName: "roles" })
-export class Role extends Model<Role, RoleCreationAttrs> {
+export class Role extends Model<Role, RoleCreationAttrs> implements IRole {
   @ApiProperty({ example: "1", description: "unique id" })
   @Column({
     type: DataType.INTEGER,

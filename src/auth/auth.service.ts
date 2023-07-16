@@ -10,20 +10,23 @@ import * as bcrypt from "bcryptjs";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { User } from "src/users/users.model";
 import { UsersService } from "src/users/users.service";
+import { IAuthService } from "./interfaces/auth-service.interface";
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService
   ) {}
 
-  async login(userDto: CreateUserDto) {
+  public async login(userDto: CreateUserDto): Promise<{ token: string }> {
     const user = await this.validateUser(userDto);
     return this.generateToken(user);
   }
 
-  async registration(userDto: CreateUserDto) {
+  public async registration(
+    userDto: CreateUserDto
+  ): Promise<{ token: string }> {
     const { email, password } = userDto;
     const candidate = await this.userService.getByEmail(email);
     if (candidate) {
@@ -37,14 +40,14 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  private async generateToken(user: User) {
+  private async generateToken(user: User): Promise<{ token: string }> {
     const { id, email, roles } = user;
     const payload = { id, email, roles };
 
     return { token: this.jwtService.sign(payload) };
   }
 
-  private async validateUser(userDto: CreateUserDto) {
+  private async validateUser(userDto: CreateUserDto): Promise<User> {
     const user = await this.userService.getByEmail(userDto.email);
     const passwordEquals = await bcrypt.compare(
       userDto.password,

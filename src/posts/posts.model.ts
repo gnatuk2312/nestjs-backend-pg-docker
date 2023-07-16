@@ -8,6 +8,7 @@ import {
 } from "sequelize-typescript";
 
 import { User } from "src/users/users.model";
+import { IPost } from "./interfaces/post.interface";
 
 interface PostCreationAttrs {
   title: string;
@@ -17,7 +18,7 @@ interface PostCreationAttrs {
 }
 
 @Table({ tableName: "posts" })
-export class Post extends Model<Post, PostCreationAttrs> {
+export class Post extends Model<Post, PostCreationAttrs> implements IPost {
   @Column({
     type: DataType.INTEGER,
     unique: true,

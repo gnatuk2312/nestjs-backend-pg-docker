@@ -3,9 +3,11 @@ import * as path from "path";
 import * as fs from "fs";
 import * as uuid from "uuid";
 
+import { IFileService } from "./interfaces/files-service.interface";
+
 @Injectable()
-export class FilesService {
-  async create(file: any): Promise<string> {
+export class FilesService implements IFileService {
+  public async create(file: any): Promise<string> {
     try {
       const fileName = uuid.v4() + ".jpg";
       const filePath = path.resolve(__dirname, "..", "static");
